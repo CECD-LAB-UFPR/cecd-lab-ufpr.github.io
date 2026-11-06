@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CECD-Lab | UFPR</title>
+<meta name="description" content="Laboratório de extensão em estatística e ciência de dados da UFPR. Incerteza medida, decisão informada.">
+<meta property="og:title" content="CECD-Lab | UFPR">
+<meta property="og:description" content="Laboratório de extensão em estatística e ciência de dados da UFPR. Incerteza medida, decisão informada.">
+<meta property="og:image" content="https://cecd-lab-ufpr.github.io/imgs/og.png">
+<meta property="og:url" content="https://cecd-lab-ufpr.github.io/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="imgs/favicon.png">
+<!-- Página de apresentação do CECD-Lab, publicada pelo GitHub Pages.
+     Visual: proposta de identidade de Luana Lagner (nov/2026), ainda em aprovação.
+     Os logos em imgs/ foram recortados do PDF da proposta: troque pelos SVG quando saírem.
+     A fonte Creato Display não está no Google Fonts: a página usa Outfit até o arquivo da fonte ser incluído. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Sono:wght@400;500&display=swap">
+<style>
+:root {
+  --papel: #f3f1ec;
+  --azul: #00548e;
+  --marinho: #13214a;
+  --ciano: #5bc2e7;
+  --ambar: #f2a93b;
+  --branco: #fff;
+  --texto: #2b3553;
+  --linha: #d8d5cc;
+  --titulo: 'Creato Display', 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --mono: 'Sono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html, body { margin: 0; padding: 0; }
+body { font-family: var(--titulo); font-size: 17px; line-height: 1.55; color: var(--texto); background: var(--papel); }
+h1, h2, h3, p, ul, ol { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
+
+.limite { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.rotulo { font-family: var(--mono); font-size: 13px; font-weight: 500; line-height: 1.3; letter-spacing: 0.16em; text-transform: uppercase; color: var(--azul); }
+.secao { padding: 72px 0; }
+.secao h2 { margin-top: 10px; font-size: clamp(30px, 4vw, 40px); font-weight: 700; line-height: 1.12; letter-spacing: -0.015em; color: var(--marinho); }
+.abertura { max-width: 62ch; margin-top: 14px; }
+
+/* Cabeçalho */
+.topo { position: sticky; top: 0; z-index: 10; background: var(--papel); border-bottom: 1px solid var(--linha); }
+.topo .limite { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 28px; padding-top: 12px; padding-bottom: 12px; }
+.topo img { width: auto; height: 42px; }
+.menu { display: flex; flex-wrap: wrap; gap: 2px 22px; }
+.menu a { padding: 2px 0; font-size: 15px; font-weight: 500; color: var(--marinho); text-decoration: none; border-bottom: 2px solid transparent; }
+.menu a:hover { border-bottom-color: var(--ambar); }
+
+/* Abertura */
+.capa { color: var(--branco); background: var(--marinho); }
+.capa .limite { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: center; gap: 48px; padding-top: 64px; padding-bottom: 64px; }
+.capa .rotulo { color: var(--ciano); }
+.capa h1 { margin-top: 16px; font-size: clamp(40px, 6vw, 66px); font-weight: 700; line-height: 1.04; letter-spacing: -0.02em; }
+.capa p.chamada { max-width: 34em; margin-top: 20px; font-size: 19px; color: rgba(255, 255, 255, 0.86); }
+.acoes { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.botao { display: inline-block; padding: 11px 20px; font-size: 16px; font-weight: 600; line-height: 1.3; text-decoration: none; border: 2px solid var(--ambar); }
+.botao-cheio { color: var(--marinho); background: var(--ambar); }
+.botao-cheio:hover { background: #f7bd63; border-color: #f7bd63; }
+.botao-vazado { color: var(--branco); }
+.botao-vazado:hover { color: var(--marinho); background: var(--ambar); }
+.tabuleiro { margin: 0; }
+.tabuleiro canvas { display: block; width: 100%; max-width: 460px; aspect-ratio: 1 / 1; margin: 0 auto; }
+.tabuleiro figcaption { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; max-width: 460px; margin: 10px auto 0; font-family: var(--mono); font-size: 13px; line-height: 1.4; color: rgba(255, 255, 255, 0.72); }
+.tabuleiro output { flex-shrink: 0; color: var(--ambar); }
+
+/* Valores */
+.valores { font-family: var(--mono); font-size: 14px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--branco); background: var(--azul); }
+.valores ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 0; padding: 14px 0; }
+.valores li:not(:last-child)::after { content: "●"; margin: 0 18px; font-size: 10px; vertical-align: 2px; color: var(--ambar); }
+
+/* O Lab */
+.duas-colunas { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 56px; align-items: start; }
+.duas-colunas p + p { margin-top: 14px; }
+.pilares li { padding: 14px 0; border-top: 1px solid var(--linha); }
+.pilares li:last-child { border-bottom: 1px solid var(--linha); }
+.pilares strong { display: block; font-size: 19px; font-weight: 600; color: var(--marinho); }
+
+/* Cartões */
+.grade { display: grid; gap: 16px; margin-top: 32px; }
+.grade-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.grade-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grade-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cartao { padding: 22px; background: var(--branco); }
+.cartao h3 { font-size: 20px; font-weight: 600; line-height: 1.25; color: var(--marinho); }
+.cartao p { margin-top: 8px; font-size: 16px; }
+.icone { display: block; width: 28px; height: 28px; margin-bottom: 14px; fill: none; stroke: var(--marinho); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Parcerias */
+.parcerias { color: var(--branco); background: var(--azul); }
+.parcerias .rotulo { color: var(--ciano); }
+.parcerias h2 { color: var(--branco); }
+.parcerias .cartao { color: var(--texto); }
+.parcerias .cartao a { color: var(--azul); }
+
+/* Como trabalhamos: régua com o marcador âmbar no último passo */
+.regua { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; margin-top: 36px; border-top: 2px solid var(--marinho); }
+.regua li { position: relative; padding-top: 22px; }
+.regua li::before { content: ""; position: absolute; top: -8px; left: 0; width: 2px; height: 14px; background: var(--marinho); }
+.regua li:last-child::before { top: -9px; width: 16px; height: 16px; background: var(--ambar); border-radius: 50%; }
+.regua .passo { font-family: var(--mono); font-size: 13px; color: var(--azul); }
+.regua strong { display: block; margin-top: 2px; font-size: 18px; font-weight: 600; line-height: 1.25; color: var(--marinho); }
+.regua p { margin-top: 6px; font-size: 15px; line-height: 1.45; }
+
+/* Equipe */
+.equipe { background: var(--branco); }
+.pessoa { display: flex; align-items: center; gap: 18px; border-top: 3px solid var(--azul); background: var(--papel); }
+.pessoa img { flex-shrink: 0; width: 96px; height: 96px; object-fit: cover; border-radius: 50%; }
+.pessoa .funcao { margin: 0 0 4px; font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--azul); }
+
+/* Contato */
+.contato { color: var(--branco); background: var(--marinho); }
+.contato .rotulo { color: var(--ciano); }
+.contato h2 { color: var(--branco); }
+.contato .duas-colunas { align-items: center; }
+.contato dl { margin: 0; }
+.contato dt { font-family: var(--mono); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ciano); }
+.contato dd { margin: 0 0 14px; }
+.contato dd:last-child { margin-bottom: 0; }
+.contato dd a { color: var(--branco); }
+
+/* Rodapé: UFPR à direita, no mesmo tamanho do CECD-Lab */
+.rodape { background: var(--branco); border-top: 4px solid var(--ambar); }
+.logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 32px; padding-top: 24px; padding-bottom: 16px; }
+.logos img { width: auto; height: 64px; }
+.logos .apoio { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
+.logos .apoio img { height: 42px; }
+.logos .apoio .logo-cecd { height: 60px; }
+.creditos { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 24px; padding-bottom: 20px; font-family: var(--mono); font-size: 13px; color: #5a6378; }
+
+@media (max-width: 960px) {
+  .capa .limite, .duas-colunas { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .grade-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grade-3 { grid-template-columns: minmax(0, 1fr); }
+  .regua { grid-template-columns: minmax(0, 1fr); gap: 0; margin-left: 8px; border-top: 0; border-left: 2px solid var(--marinho); }
+  .regua li { padding: 0 0 22px 22px; }
+  .regua li:last-child { padding-bottom: 0; }
+  .regua li::before { top: 8px; left: -8px; width: 14px; height: 2px; }
+  .regua li:last-child::before { top: 4px; left: -9px; width: 16px; height: 16px; }
+}
+@media (max-width: 760px) {
+  html { scroll-padding-top: 12px; }
+  body { font-size: 16px; }
+  .limite { padding: 0 16px; }
+  .topo { position: static; }
+  .topo .limite { padding-top: 10px; padding-bottom: 10px; }
+  .menu { gap: 2px 16px; }
+  .capa .limite { padding-top: 40px; padding-bottom: 40px; }
+  .capa p.chamada { font-size: 17px; }
+  .secao { padding: 48px 0; }
+  .grade-4, .grade-2 { grid-template-columns: minmax(0, 1fr); }
+  .valores { font-size: 12px; letter-spacing: 0.1em; }
+  .valores li:not(:last-child)::after { margin: 0 10px; }
+  .logos img { height: 48px; }
+  .logos .apoio { order: 3; width: 100%; }
+  .logos .apoio img { height: 32px; }
+  .logos .apoio .logo-cecd { height: 48px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <a href="#inicio"><img src="imgs/logo_lab_reduzido.png" alt="CECD-Lab" width="151" height="42"></a>
+    <nav class="menu" aria-label="Seções da página">
+      <a href="#lab">O Lab</a>
+      <a href="#frentes">Frentes</a>
+      <a href="#parcerias">Parcerias</a>
+      <a href="#metodo">Como trabalhamos</a>
+      <a href="#equipe">Equipe</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+
+  <section class="capa">
+    <div class="limite">
+      <div>
+        <p class="rotulo">Projeto de extensão · UFPR</p>
+        <h1>Incerteza medida, decisão informada.</h1>
+        <p class="chamada">Laboratório de extensão em estatística e ciência de dados, em que estudantes da UFPR usam software livre para responder a desafios reais da sociedade.</p>
+        <div class="acoes">
+          <a class="botao botao-cheio" href="#parcerias">Conheça as parcerias</a>
+          <a class="botao botao-vazado" href="#contato">Fale com o Lab</a>
+        </div>
+      </div>
+      <figure class="tabuleiro">
+        <canvas id="galton" role="img" aria-label="Tabuleiro de Galton: esferas caem por uma malha de pinos e, juntas, formam a curva normal."></canvas>
+        <figcaption><span>Sozinha, cada esfera é imprevisível. Juntas, desenham a curva normal.</span><output id="galton-n" aria-hidden="true"></output></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="valores">
+    <div class="limite">
+      <ul>
+        <li>Rigor</li><li>Transparência</li><li>Colaboração</li><li>Curiosidade</li><li>Impacto público</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="secao" id="lab">
+    <div class="limite duas-colunas">
+      <div>
+        <p class="rotulo">O Lab</p>
+        <h2>Ciência de dados como ferramenta de transformação</h2>
+        <p class="abertura">O CECD-Lab é o laboratório de extensão da Coordenadoria de Estatística e Ciência de Dados (CECD), da Pró-Reitoria de Planejamento e Dados da UFPR. É um espaço colaborativo que une a expertise técnica da universidade à resolução de desafios reais da sociedade.</p>
+        <p>Enquanto a CECD atua nas prioridades da gestão superior da UFPR, o CECD-Lab atua onde a gestão administrativa não alcança: pesquisas, iniciativas estudantis, terceiro setor, conselhos comunitários e gestores públicos.</p>
+      </div>
+      <ul class="pilares">
+        <li><strong>Software livre</strong>R e Python como base do trabalho, com códigos abertos e reprodutíveis.</li>
+        <li><strong>Letramento analítico</strong>Oficinas, cursos e materiais para a comunidade interna e externa.</li>
+        <li><strong>Autonomia tecnológica</strong>Menos dependência de softwares proprietários de alto custo.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="secao" id="frentes" style="padding-top: 0">
+    <div class="limite">
+      <p class="rotulo">Frentes de atuação</p>
+      <h2>O que fazemos</h2>
+      <div class="grade grade-4">
+        <article class="cartao">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <h3>Consultoria supervisionada</h3>
+          <p>Estatística, modelagem e visualização para projetos que não teriam acesso a esse suporte, com protagonismo dos estudantes.</p>
+        </article>
+        <article class="cartao">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+          <h3>Letramento em dados</h3>
+          <p>Oficinas práticas, cursos e capacitações, com mentoria entre estudantes mais experientes e iniciantes.</p>
+        </article>
+        <article class="cartao">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <h3>Estudos de impacto social</h3>
+          <p>Pesquisas aplicadas sobre questões de relevância pública, que geram subsídios para políticas públicas.</p>
+        </article>
+        <article class="cartao">
+          <svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></svg>
+          <h3>Repositórios abertos</h3>
+          <p>Códigos, metodologias reprodutíveis, relatórios técnicos e dashboards públicos, na lógica da ciência aberta.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao parcerias" id="parcerias">
+    <div class="limite">
+      <p class="rotulo">Parcerias</p>
+      <h2>Nossos parceiros</h2>
+      <div class="grade grade-3">
+        <article class="cartao">
+          <h3>Curso de Estatística</h3>
+          <p>Universidade Federal do Paraná</p>
+          <p><a href="http://www.est.ufpr.br/">est.ufpr.br</a></p>
+        </article>
+        <article class="cartao">
+          <h3>IPPUC</h3>
+          <p>Instituto de Pesquisa e Planejamento Urbano de Curitiba</p>
+          <p><a href="https://www.ippuc.org.br/">ippuc.org.br</a></p>
+        </article>
+        <article class="cartao">
+          <h3>Paraná Chuva</h3>
+          <p>Projeto da professora Camila Carpenedo</p>
+          <p><a href="https://nuvem.ufpr.br/">nuvem.ufpr.br</a></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="metodo">
+    <div class="limite">
+      <p class="rotulo">Como trabalhamos</p>
+      <h2>Da pergunta à devolutiva</h2>
+      <ol class="regua">
+        <li><span class="passo">01</span><strong>Acolhimento e triagem</strong><p>Escuta ativa das demandas, avaliando potencial de aprendizado e relevância social.</p></li>
+        <li><span class="passo">02</span><strong>Consultoria supervisionada</strong><p>O estudante executa o ciclo completo, de requisitos a modelagem e visualização, com apoio técnico.</p></li>
+        <li><span class="passo">03</span><strong>Letramento e capacitação</strong><p>Oficinas mão na massa, com mentoria entre estudantes.</p></li>
+        <li><span class="passo">04</span><strong>Gestão do conhecimento</strong><p>GitHub e GitLab para garantir reprodutibilidade, além de relatos críticos e artigos.</p></li>
+        <li><span class="passo">05</span><strong>Devolutiva</strong><p>Os resultados voltam à comunidade para validar achados e respeitar o saber de quem vive o problema.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="secao" id="publico" style="padding-top: 0">
+    <div class="limite">
+      <p class="rotulo">Para quem</p>
+      <h2>Com quem trabalhamos</h2>
+      <div class="grade grade-3">
+        <article class="cartao">
+          <h3>Comunidade da UFPR</h3>
+          <p>Estudantes em busca de formação prática e docentes e pesquisadores que precisam de suporte metodológico.</p>
+        </article>
+        <article class="cartao">
+          <h3>Comunidade externa</h3>
+          <p>Terceiro setor, conselhos comunitários, movimentos sociais e gestores públicos locais.</p>
+        </article>
+        <article class="cartao">
+          <h3>Software livre</h3>
+          <p>Entusiastas e cidadãos interessados em autonomia para conduzir as próprias análises de dados.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao equipe" id="equipe">
+    <div class="limite">
+      <p class="rotulo">Equipe</p>
+      <h2>Quem faz o Lab</h2>
+      <p class="abertura">O corpo técnico da CECD orienta e supervisiona os estudantes em uma rede de mentoria colaborativa.</p>
+      <div class="grade grade-2">
+        <article class="cartao pessoa">
+          <img src="imgs/equipe_lineu.jpg" alt="Foto de Lineu Alberto Cavazani de Freitas" width="96" height="96">
+          <div>
+            <p class="funcao">Coordenação</p>
+            <h3>Lineu Alberto Cavazani de Freitas</h3>
+            <p>Estatístico, coordenador da CECD/PROPLAD</p>
+          </div>
+        </article>
+        <article class="cartao pessoa">
+          <img src="imgs/equipe_edicleia.jpg" alt="Foto de Edicleia Furlanetto" width="96" height="96">
+          <div>
+            <p class="funcao">Vice-coordenação</p>
+            <h3>Edicleia Furlanetto</h3>
+            <p>Estatística na CECD</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao contato" id="contato">
+    <div class="limite duas-colunas">
+      <div>
+        <p class="rotulo">Contato</p>
+        <h2>Tem uma demanda ou quer participar?</h2>
+        <p class="abertura">Conte para a gente qual é a sua pergunta. É nela que toda análise começa.</p>
+        <div class="acoes"><a class="botao botao-cheio" href="mailto:cecd.proplad@ufpr.br">Escreva para o Lab</a></div>
+      </div>
+      <dl>
+        <dt>E-mail</dt>
+        <dd><a href="mailto:cecd.proplad@ufpr.br">cecd.proplad@ufpr.br</a></dd>
+        <dt>Onde estamos</dt>
+        <dd>CECD, na Reitoria, e DEST, no Centro Politécnico, com atuação híbrida</dd>
+        <dt>GitHub</dt>
+        <dd><a href="https://github.com/CECD-LAB-UFPR">github.com/CECD-LAB-UFPR</a></dd>
+      </dl>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="limite logos">
+    <img src="imgs/logo_lab.png" alt="CECD-Lab: projeto de extensão de estatística e ciência de dados" width="246" height="64">
+    <div class="apoio">
+      <img class="logo-cecd" src="imgs/logo_cecd.png" alt="Coordenadoria de Estatística e Ciência de Dados">
+      <img src="imgs/logo_proplad.png" alt="Pró-Reitoria de Planejamento e Dados">
+    </div>
+    <img src="imgs/logo_ufpr.png" alt="Universidade Federal do Paraná">
+  </div>
+  <div class="limite creditos">
+    <span>Identidade visual: Luana Lagner</span>
+    <a href="https://cecdapps.ufpr.br/">Painéis e ferramentas da CECD</a>
+  </div>
+</footer>
+
+<script>
+/* Tabuleiro de Galton: cada esfera escolhe esquerda ou direita em cada linha de pinos.
+   Os resultados são sorteados de verdade; a curva ciano é a distribuição esperada. */
+(function () {
+  var tela = document.getElementById('galton');
+  var rotuloN = document.getElementById('galton-n');
+  if (!tela || !tela.getContext) return;
+  var ctx = tela.getContext('2d');
+  var LINHAS = 10, TOTAL = 320, INTERVALO = 85, VELOCIDADE = 0.0085, PAUSA = 4500;
+  var CIANO = '#5bc2e7', AMBAR = '#f2a93b';
+  var parado = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Probabilidades binomiais (n = LINHAS, p = 0,5)
+  var prob = [1];
+  for (var i = 1; i <= LINHAS; i++) prob.push(prob[i - 1] * (LINHAS - i + 1) / i);
+  prob = prob.map(function (c) { return c / Math.pow(2, LINHAS); });
+  var pMax = Math.max.apply(null, prob);
+
+  var L, A, dx, topoY, passoY, baseY, alturaMax;
+  function medir() {
+    var r = tela.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    L = r.width; A = r.height;
+    tela.width = Math.round(L * dpr); tela.height = Math.round(A * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    dx = L / (LINHAS + 2);
+    topoY = A * 0.05; passoY = A * 0.054;
+    baseY = A - 2;
+    alturaMax = baseY - (topoY + LINHAS * passoY) - 6;
+  }
+  function pino(linha, col) { return { x: L / 2 + (col - linha / 2) * dx, y: topoY + linha * passoY }; }
+  function altura(contagem) { return contagem / (TOTAL * pMax * 1.2) * alturaMax; }
+
+  var contagem, bolas, lancadas, ultima, espera;
+  function iniciar() {
+    contagem = prob.map(function () { return 0; });
+    bolas = []; lancadas = 0; ultima = null; espera = 0;
+  }
+  function lancar() {
+    var caminho = [];
+    for (var k = 0; k < LINHAS; k++) caminho.push(Math.random() < 0.5 ? 0 : 1);
+    var b = { caminho: caminho, t: 0 };
+    bolas.push(b); ultima = b; lancadas++;
+  }
+  function coluna(b, passos) {
+    var c = 0;
+    for (var k = 0; k < passos; k++) c += b.caminho[k];
+    return c;
+  }
+  function posicao(b) {
+    if (b.t >= LINHAS) {
+      var fim = pino(LINHAS, coluna(b, LINHAS));
+      return { x: fim.x, y: fim.y + (b.t - LINHAS) * passoY * 1.6 };
+    }
+    var n = Math.floor(b.t), f = b.t - n;
+    var a = pino(n, coluna(b, n)), z = pino(n + 1, coluna(b, n + 1));
+    var e = f * f * (3 - 2 * f);
+    return { x: a.x + (z.x - a.x) * e, y: a.y + (z.y - a.y) * f - Math.sin(f * Math.PI) * passoY * 0.3 };
+  }
+
+  function desenhar() {
+    ctx.clearRect(0, 0, L, A);
+    var r, c, p, q;
+    // Malha triangular, como no símbolo
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(91, 194, 231, 0.28)'; ctx.beginPath();
+    for (r = 0; r < LINHAS; r++) for (c = 0; c <= r; c++) {
+      p = pino(r, c);
+      if (c < r) { q = pino(r, c + 1); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); }
+      if (r < LINHAS - 1) {
+        q = pino(r + 1, c); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+        q = pino(r + 1, c + 1); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+      }
+    }
+    ctx.stroke();
+    ctx.fillStyle = '#fff';
+    for (r = 0; r < LINHAS; r++) for (c = 0; c <= r; c++) {
+      p = pino(r, c); ctx.beginPath(); ctx.arc(p.x, p.y, 2.4, 0, 6.3); ctx.fill();
+    }
+    // Barras com o resultado até agora
+    var largura = dx * 0.74;
+    ctx.fillStyle = 'rgba(91, 194, 231, 0.5)';
+    contagem.forEach(function (n, k) {
+      var x = pino(LINHAS, k).x, h = altura(n);
+      ctx.fillRect(x - largura / 2, baseY - h, largura, h);
+    });
+    // Curva esperada
+    var media = LINHAS / 2, dp = Math.sqrt(LINHAS) / 2;
+    ctx.strokeStyle = CIANO; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.beginPath();
+    for (var v = -1; v <= LINHAS + 1.001; v += 0.1) {
+      var d = Math.exp(-Math.pow(v - media, 2) / (2 * dp * dp)) / (dp * Math.sqrt(2 * Math.PI));
+      var px = L / 2 + (v - media) * dx, py = baseY - altura(TOTAL * d);
+      if (v === -1) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, baseY); ctx.lineTo(L, baseY); ctx.stroke();
+    // Trajetória âmbar da esfera mais recente
+    if (ultima && ultima.t < LINHAS) {
+      var feitos = Math.floor(ultima.t), atual = posicao(ultima);
+      ctx.strokeStyle = AMBAR; ctx.lineWidth = 2.5; ctx.beginPath();
+      p = pino(0, 0); ctx.moveTo(p.x, p.y);
+      for (r = 1; r <= feitos; r++) { p = pino(r, coluna(ultima, r)); ctx.lineTo(p.x, p.y); }
+      ctx.lineTo(atual.x, atual.y); ctx.stroke();
+    }
+    ctx.fillStyle = AMBAR;
+    bolas.forEach(function (b) {
+      var o = posicao(b); ctx.beginPath(); ctx.arc(o.x, o.y, 4, 0, 6.3); ctx.fill();
+    });
+    var soma = contagem.reduce(function (a, b) { return a + b; }, 0);
+    rotuloN.textContent = 'n = ' + soma;
+  }
+
+  var visivel = true, rodando = false, antes = 0, acumulado = 0;
+  function quadro(agora) {
+    if (!visivel) { rodando = false; return; }
+    var dt = Math.min(agora - antes, 50); antes = agora;
+    if (lancadas < TOTAL) {
+      acumulado += dt;
+      while (acumulado >= INTERVALO && lancadas < TOTAL) { lancar(); acumulado -= INTERVALO; }
+    }
+    bolas = bolas.filter(function (b) {
+      b.t += dt * VELOCIDADE;
+      if (b.t < LINHAS) return true;
+      var k = coluna(b, LINHAS);
+      if (posicao(b).y < baseY - altura(contagem[k])) return true;
+      contagem[k]++;
+      return false;
+    });
+    if (lancadas >= TOTAL && !bolas.length) {
+      espera += dt;
+      if (espera >= PAUSA) iniciar();
+    }
+    desenhar();
+    requestAnimationFrame(quadro);
+  }
+  function ligar() {
+    if (rodando || parado) return;
+    rodando = true; antes = performance.now(); requestAnimationFrame(quadro);
+  }
+
+  medir(); iniciar();
+  if (parado) {
+    contagem = prob.map(function (p) { return Math.round(p * TOTAL); });
+    desenhar();
+  } else {
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (itens) {
+        visivel = itens[0].isIntersecting;
+        if (visivel) ligar();
+      }).observe(tela);
+    }
+    ligar();
+  }
+  window.addEventListener('resize', function () { medir(); desenhar(); });
+})();
+</script>
+
+</body>
+</html>
