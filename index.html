@@ -94,6 +94,17 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
 .cartao p { margin-top: 8px; font-size: 16px; }
 .icone { display: block; width: 28px; height: 28px; margin-bottom: 14px; fill: none; stroke: var(--marinho); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
+/* Projetos: lista agrupada por área. A fonte é a planilha "Grupos CECD - LAB",
+   com vínculo PROJETO ou CE307/PROJETO. Nomes e contatos de estudantes ficam fora da página. */
+.projetos { background: var(--branco); }
+.areas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 44px 56px; margin-top: 36px; }
+.area .rotulo { padding-bottom: 12px; border-bottom: 2px solid var(--marinho); }
+.projeto { padding: 14px 0; border-bottom: 1px solid var(--linha); }
+.projeto-topo { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.projeto h4 { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.3; color: var(--marinho); }
+.projeto .tipo { flex-shrink: 0; font-family: var(--mono); font-size: 13px; line-height: 1.3; color: var(--azul); }
+.projeto p { margin-top: 4px; font-size: 16px; line-height: 1.45; }
+
 /* Parcerias */
 .parcerias { color: var(--branco); background: var(--azul); }
 .parcerias .rotulo { color: var(--ciano); }
@@ -137,7 +148,7 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
 .creditos { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 24px; padding-bottom: 20px; font-family: var(--mono); font-size: 13px; color: #5a6378; }
 
 @media (max-width: 960px) {
-  .capa .limite, .duas-colunas { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .capa .limite, .duas-colunas, .areas { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   .grade-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grade-3 { grid-template-columns: minmax(0, 1fr); }
   .regua { grid-template-columns: minmax(0, 1fr); gap: 0; margin-left: 8px; border-top: 0; border-left: 2px solid var(--marinho); }
@@ -177,6 +188,7 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
     <nav class="menu" aria-label="Seções da página">
       <a href="#lab">O Lab</a>
       <a href="#frentes">Frentes</a>
+      <a href="#projetos">Projetos</a>
       <a href="#parcerias">Parcerias</a>
       <a href="#metodo">Como trabalhamos</a>
       <a href="#equipe">Equipe</a>
@@ -254,6 +266,88 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
           <h3>Repositórios abertos</h3>
           <p>Códigos, metodologias reprodutíveis, relatórios técnicos e dashboards públicos, na lógica da ciência aberta.</p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao projetos" id="projetos">
+    <div class="limite">
+      <p class="rotulo">Projetos</p>
+      <h2>Projetos em andamento</h2>
+      <p class="abertura">Estudantes orientados pela equipe da CECD trabalham em projetos que vão da chuva no Paraná à permanência na universidade.</p>
+      <div class="areas">
+        <section class="area">
+          <h3 class="rotulo">Clima e desastres</h3>
+          <ul>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Paraná Chuva: Precipitação</h4><span class="tipo">Dashboard</span></div>
+              <p>Painel interativo com dados de precipitação, climatologia e anomalias de chuva no Paraná.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Paraná Chuva: Índices Extremos</h4><span class="tipo">Dashboard</span></div>
+              <p>Painel interativo com índices de seca e excesso hídrico, por município e mesorregião.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Paraná Chuva: Desastres</h4><span class="tipo">Dashboard</span></div>
+              <p>Painel sobre desastres no Paraná.</p>
+            </li>
+          </ul>
+        </section>
+        <section class="area">
+          <h3 class="rotulo">Educação e permanência</h3>
+          <ul>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Modelagem preditiva de evasão e retenção estudantil</h4><span class="tipo">Relatório</span></div>
+              <p>Compara modelos em R para entender a evasão na UFPR, com atenção à assistência estudantil e ao rendimento acadêmico.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Inep: ações afirmativas e origem escolar</h4><span class="tipo">Relatório</span></div>
+              <p>Analisa o impacto da origem escolar e das cotas na trajetória de estudantes da rede pública, no Paraná e na UFPR.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Evasão no curso de Estatística</h4><span class="tipo">Relatório</span></div>
+              <p>Análise exploratória dos dados de evasão do curso.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Disciplinas com alta taxa de reprovação</h4><span class="tipo">Relatório</span></div>
+              <p>Estudo das disciplinas com mais reprovações no curso de Estatística.</p>
+            </li>
+          </ul>
+        </section>
+        <section class="area">
+          <h3 class="rotulo">Saúde e desempenho</h3>
+          <ul>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Notificações SINAN</h4><span class="tipo">Relatório</span></div>
+              <p>Análise de notificações do Sistema de Informação de Agravos de Notificação.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Lesões no voleibol</h4><span class="tipo">Relatório</span></div>
+              <p>Análise de dados sobre lesões no voleibol.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>PIPE: Plataforma de Indicadores e Performance de Equipe</h4><span class="tipo">Dashboard</span></div>
+              <p>Painel de indicadores para acompanhar o desempenho de equipe.</p>
+            </li>
+          </ul>
+        </section>
+        <section class="area">
+          <h3 class="rotulo">Cidade e comunidade</h3>
+          <ul>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>IPPUC</h4><span class="tipo">Dashboard</span></div>
+              <p>Projeto com o Instituto de Pesquisa e Planejamento Urbano de Curitiba.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Meninas – CECD-Lab</h4><span class="tipo">Relatório</span></div>
+              <p>Apresenta a estatística a estudantes dos ensinos fundamental e médio.</p>
+            </li>
+            <li class="projeto">
+              <div class="projeto-topo"><h4>Identidade visual do Lab</h4><span class="tipo">Site e marca</span></div>
+              <p>Desenvolvimento de site, logotipo e redes sociais do CECD-Lab.</p>
+            </li>
+          </ul>
+        </section>
       </div>
     </div>
   </section>
