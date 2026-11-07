@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teorema Central do Limite · Simuladores do CECD-Lab</title>
+<meta name="description" content="Escolha ou desenhe uma população e veja as médias das amostras formarem a curva normal.">
+<meta property="og:title" content="Teorema Central do Limite · Simuladores do CECD-Lab">
+<meta property="og:description" content="Escolha ou desenhe uma população e veja as médias das amostras formarem a curva normal.">
+<meta property="og:image" content="https://cecd-lab-ufpr.github.io/imgs/og.png">
+<meta property="og:url" content="https://cecd-lab-ufpr.github.io/simuladores/limite-central/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../../imgs/favicon.png">
+<link rel="stylesheet" href="../base/lab.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <a href="../../"><img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="131" height="40"></a>
+    <nav aria-label="Navegação">
+      <a href="../">Simuladores</a>
+      <a class="rede" href="https://www.instagram.com/cecdlabufpr/" aria-label="Instagram do CECD-Lab" title="Instagram do CECD-Lab"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><path d="M17.5 6.5h.01"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="limite abertura">
+    <p class="rotulo">Simulador · Teorema Central do Limite</p>
+    <h1>Qualquer população. A média vira normal.</h1>
+    <p class="chamada">Escolha uma população, até desenhada por você, e veja a forma das médias das amostras.</p>
+  </section>
+
+  <section class="limite bancada" aria-label="Simulador">
+    <div class="graficos">
+      <figure class="painel" style="--alto: 170px; --alto-celular: 140px">
+        <figcaption><strong>Fig. 01</strong><span>População e amostra mais recente</span></figcaption>
+        <canvas id="grafico-pop" role="img" aria-label="Forma da população. Traços marcam os valores da amostra mais recente e o ponto âmbar marca a média dela."></canvas>
+      </figure>
+      <figure class="painel" style="--alto: 260px; --alto-celular: 220px">
+        <figcaption><strong>Fig. 02</strong><span>Médias de todas as amostras</span></figcaption>
+        <canvas id="grafico" role="img" aria-label="Histograma das médias das amostras, com a curva normal prevista pelo teorema."></canvas>
+        <ul class="legenda">
+          <li><span class="chave chave-barra"></span>médias sorteadas</li>
+          <li><span class="chave chave-ambar"></span>média mais recente</li>
+          <li><span class="chave chave-branca"></span>curva normal prevista</li>
+        </ul>
+      </figure>
+    </div>
+    <div class="lateral">
+      <dl class="leituras">
+        <div class="leitura"><dt>Amostras</dt><dd id="total">–</dd></div><div class="leitura"><dt>Média das médias</dt><dd id="media">–</dd><small id="media-teo">&nbsp;</small></div>
+        <div class="leitura"><dt>DP das médias</dt><dd id="dp">–</dd><small id="dp-teo">&nbsp;</small></div><div class="leitura"><dt>Assimetria</dt><dd id="assimetria">–</dd><small id="assimetria-teo">&nbsp;</small></div>
+      </dl>
+      <div class="controles">
+        <div class="campo">
+          <span class="rotulo" id="populacao-rotulo">População</span>
+          <div class="chips" id="populacao" role="group" aria-labelledby="populacao-rotulo"><button type="button" data-valor="uniforme" aria-pressed="false">Uniforme</button><button type="button" data-valor="assimetrica" aria-pressed="false">Assimétrica</button><button type="button" data-valor="picos" aria-pressed="false">Dois picos</button><button type="button" data-valor="extremos" aria-pressed="false">Extremos</button><button type="button" data-valor="premio" aria-pressed="false">Prêmio raro</button><button type="button" data-valor="desenhe" aria-pressed="false">Desenhe a sua</button></div>
+        </div>
+        <p class="ajuda" id="aviso-desenho" hidden>Desenhe na Fig. 01. Ao soltar, as amostras recomeçam.</p>
+        <div class="campo">
+          <div class="campo-topo"><label for="n">Tamanho de cada amostra</label><output id="n-saida" for="n">n = 5</output></div>
+          <input id="n" type="range" min="0" max="7" step="1" value="2">
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="escala-rotulo">Escala da Fig. 02</span>
+          <div class="chips" id="escala" role="group" aria-labelledby="escala-rotulo"><button type="button" data-valor="original" aria-pressed="false">Original</button><button type="button" data-valor="ampliada" aria-pressed="false">Ampliada</button></div>
+        </div>
+        <label class="marcar"><input type="checkbox" id="curva" checked>Mostrar a curva normal</label>
+        <div class="botoes">
+          <button class="botao botao-cheio" type="button" id="jogar">Sortear amostras</button>
+          <button class="botao" type="button" id="uma">+1</button>
+          <button class="botao" type="button" id="mil">+1.000</button>
+          <button class="botao" type="button" id="limpar">Limpar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Experimente</p>
+    <h2>Toque e veja o que acontece</h2>
+    <div class="desafios">
+      <button class="desafio" type="button" data-desafio="torta" aria-pressed="false">
+        <span class="passo">01</span><strong>Comece com n = 1</strong><span class="texto">Uma amostra de um valor só: as médias copiam a população torta.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="trinta" aria-pressed="false">
+        <span class="passo">02</span><strong>Agora n = 30</strong><span class="texto">A mesma população, e o histograma quase cola na curva normal.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="picos" aria-pressed="false">
+        <span class="passo">03</span><strong>Dois picos, n = 2</strong><span class="texto">Aparecem três montes. Suba n aos poucos e veja eles virarem um.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="raiz" aria-pressed="false">
+        <span class="passo">04</span><strong>Quatro vezes mais dados</strong><span class="texto">Com n = 20, o DP é metade do de n = 5. Compare os dois.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="premio" aria-pressed="false">
+        <span class="passo">05</span><strong>A regra do 30 falha</strong><span class="texto">Prêmio raro: mesmo com n = 30, as médias ainda são tortas.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="desenho" aria-pressed="false">
+        <span class="passo">06</span><strong>Desenhe a sua</strong><span class="texto">Faça a forma mais estranha que conseguir e tente quebrar o teorema.</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Entenda</p>
+    <h2>O que você acabou de ver</h2>
+    <div class="explica">
+      <article><h3>O que está acontecendo</h3><p>Em cada amostra, valores altos e baixos tendem a se compensar. Por isso as médias se juntam perto de μ, e a forma delas fica cada vez mais próxima da normal, seja qual for a população.</p></article>
+      <article><h3>Cuidado</h3><p>O teorema fala da média, não dos dados: coletar mais dados não deixa os dados normais. E n = 30 é só um costume. Quanto mais torta a população, maior a amostra necessária. As observações também precisam ser independentes e ter variância finita.</p></article>
+    </div>
+    <details class="conta">
+      <summary>O teorema em uma linha</summary>
+      <div class="miolo">
+        <p class="formula">x̄ ≈ Normal(μ, σ²/n) para n grande</p>
+        <p>A média das médias é μ, e o desvio padrão das médias, chamado erro padrão, é σ/√n. A assimetria das médias cai com √n: é a última linha das leituras ao lado.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="reels">
+    <div class="limite">
+      <div><strong>Estatística em 30s</strong><p>Os vídeos explicam. Os simuladores deixam você testar.</p></div>
+      <a href="https://www.instagram.com/cecdlabufpr/">Ver no Instagram</a>
+    </div>
+  </section>
+
+  <nav class="limite seguir" aria-label="Outros simuladores">
+    <a href="../grandes-numeros/"><span class="rotulo">Anterior</span>Lei dos grandes números</a>
+    <a href="../intervalo-de-confianca/"><span class="rotulo">Próximo</span>Intervalo de confiança</a>
+  </nav>
+</main>
+
+<footer class="rodape">
+  <div class="limite logos">
+    <img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="170" height="52">
+    <span class="fio" aria-hidden="true"></span>
+    <img src="../../imgs/logo_ufpr.png" alt="Universidade Federal do Paraná">
+  </div>
+  <div class="limite creditos">
+    <span>Dados simulados no seu navegador. Nada é enviado.</span>
+    <a href="../../">Página do CECD-Lab</a>
+  </div>
+</footer>
+<script src="../base/estat.js"></script>
+<script src="../base/lab.js"></script>
+<script src="sim.js"></script>
+</body>
+</html>

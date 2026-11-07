@@ -95,6 +95,8 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
 .cartao { padding: 22px; background: var(--branco); }
 .cartao h3 { font-size: 20px; font-weight: 600; line-height: 1.25; color: var(--marinho); }
 .cartao p { margin-top: 8px; font-size: 16px; }
+.cartao-link { display: block; text-decoration: none; border-bottom: 3px solid transparent; }
+.cartao-link:hover { border-bottom-color: var(--ambar); }
 .icone { display: block; width: 28px; height: 28px; margin-bottom: 14px; fill: none; stroke: var(--marinho); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Projetos: lista agrupada por área. A fonte é a planilha "Grupos CECD - LAB",
@@ -193,6 +195,7 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
     <nav class="menu" aria-label="Seções da página">
       <a href="#lab">O Lab</a>
       <a href="#frentes">Frentes</a>
+      <a href="#simuladores">Simuladores</a>
       <a href="#projetos">Projetos</a>
       <a href="#parcerias">Parcerias</a>
       <a href="#metodo">Como trabalhamos</a>
@@ -274,6 +277,22 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
           <h3>Repositórios abertos</h3>
           <p>Códigos, metodologias reprodutíveis, relatórios técnicos e dashboards públicos, na lógica da ciência aberta.</p>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="secao" id="simuladores" style="padding-top: 0">
+    <div class="limite">
+      <p class="rotulo">Simuladores</p>
+      <h2>Estatística para testar com as mãos</h2>
+      <p class="abertura">Os vídeos do nosso Instagram explicam o conceito. Aqui você muda os valores, sorteia de novo e vê o que acontece.</p>
+      <div class="grade grade-3">
+        <a class="cartao cartao-link" href="simuladores/desvio-padrao/"><h3>Desvio padrão</h3><p>Arraste as notas de duas turmas com a mesma média.</p></a>
+        <a class="cartao cartao-link" href="simuladores/grandes-numeros/"><h3>Lei dos grandes números</h3><p>Lance moedas e dados até 100 mil vezes.</p></a>
+        <a class="cartao cartao-link" href="simuladores/limite-central/"><h3>Teorema Central do Limite</h3><p>Desenhe uma população e veja a curva normal surgir.</p></a>
+        <a class="cartao cartao-link" href="simuladores/intervalo-de-confianca/"><h3>Intervalo de confiança</h3><p>Conte quantos intervalos erram a média verdadeira.</p></a>
+        <a class="cartao cartao-link" href="simuladores/correlacao/"><h3>Correlação</h3><p>Mova pontos e tente adivinhar o r de cinco gráficos.</p></a>
+        <a class="cartao cartao-link" href="simuladores/falso-positivo/"><h3>Falso positivo</h3><p>Veja por que um teste bom pode errar tanto.</p></a>
       </div>
     </div>
   </section>

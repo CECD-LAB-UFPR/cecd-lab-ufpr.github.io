@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intervalo de confiança · Simuladores do CECD-Lab</title>
+<meta name="description" content="Sorteie centenas de amostras e veja quantos intervalos capturam a média verdadeira.">
+<meta property="og:title" content="Intervalo de confiança · Simuladores do CECD-Lab">
+<meta property="og:description" content="Sorteie centenas de amostras e veja quantos intervalos capturam a média verdadeira.">
+<meta property="og:image" content="https://cecd-lab-ufpr.github.io/imgs/og.png">
+<meta property="og:url" content="https://cecd-lab-ufpr.github.io/simuladores/intervalo-de-confianca/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../../imgs/favicon.png">
+<link rel="stylesheet" href="../base/lab.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <a href="../../"><img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="131" height="40"></a>
+    <nav aria-label="Navegação">
+      <a href="../">Simuladores</a>
+      <a class="rede" href="https://www.instagram.com/cecdlabufpr/" aria-label="Instagram do CECD-Lab" title="Instagram do CECD-Lab"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><path d="M17.5 6.5h.01"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="limite abertura">
+    <p class="rotulo">Simulador · Intervalo de confiança</p>
+    <h1>95% de confiança em quê?</h1>
+    <p class="chamada">Aqui você vê o que ninguém vê na vida real: a média verdadeira, e quais intervalos erraram.</p>
+  </section>
+
+  <section class="limite bancada" aria-label="Simulador">
+    <div class="graficos">
+      <figure class="painel" style="--alto: 470px; --alto-celular: 400px">
+        <figcaption><strong>Fig. 01</strong><span>Um intervalo por amostra, o mais novo no topo</span></figcaption>
+        <canvas id="grafico" role="img" aria-label="Intervalos de confiança empilhados. Uma linha vertical marca a média verdadeira e os intervalos que não a contêm ficam em âmbar."></canvas>
+        <ul class="legenda" id="legenda">
+          <li><span class="chave"></span>contém μ</li>
+          <li><span class="chave chave-ambar"></span>errou μ</li>
+        </ul>
+      </figure>
+    </div>
+    <div class="lateral">
+      <p class="veredito" id="veredito" aria-live="polite"></p>
+      <dl class="leituras">
+        <div class="leitura"><dt>Intervalos</dt><dd id="total">–</dd></div><div class="leitura"><dt>Contêm μ</dt><dd id="acertos">–</dd><small id="erros">&nbsp;</small></div>
+        <div class="leitura"><dt>Cobertura</dt><dd id="cobertura">–</dd><small id="nominal">&nbsp;</small></div><div class="leitura"><dt>Largura média</dt><dd id="largura">–</dd><small id="quantil">&nbsp;</small></div>
+      </dl>
+      <div class="controles">
+        <div class="campo">
+          <div class="campo-topo"><label for="n">Tamanho da amostra</label><output id="n-saida" for="n">n = 20</output></div>
+          <input id="n" type="range" min="0" max="7" step="1" value="3">
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="nivel-rotulo">Confiança</span>
+          <div class="chips" id="nivel" role="group" aria-labelledby="nivel-rotulo"><button type="button" data-valor="0.8" aria-pressed="false">80%</button><button type="button" data-valor="0.9" aria-pressed="false">90%</button><button type="button" data-valor="0.95" aria-pressed="false">95%</button><button type="button" data-valor="0.99" aria-pressed="false">99%</button></div>
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="metodo-rotulo">Valor crítico</span>
+          <div class="chips" id="metodo" role="group" aria-labelledby="metodo-rotulo"><button type="button" data-valor="t" aria-pressed="false">t de Student</button><button type="button" data-valor="z" aria-pressed="false">z da normal</button></div>
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="populacao-rotulo">População</span>
+          <div class="chips" id="populacao" role="group" aria-labelledby="populacao-rotulo"><button type="button" data-valor="normal" aria-pressed="false">Normal</button><button type="button" data-valor="assimetrica" aria-pressed="false">Assimétrica</button></div>
+        </div>
+        <div class="botoes">
+          <button class="botao botao-cheio" type="button" id="jogar">Sortear amostras</button>
+          <button class="botao botao-cheio" type="button" id="nova" hidden>Nova amostra</button>
+          <button class="botao" type="button" id="cem">+100</button>
+          <button class="botao" type="button" id="limpar">Limpar</button>
+          <button class="botao" type="button" id="revelar">Esconder a verdade</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Experimente</p>
+    <h2>Toque e veja o que acontece</h2>
+    <div class="desafios">
+      <button class="desafio" type="button" data-desafio="conte" aria-pressed="false">
+        <span class="passo">01</span><strong>Conte os que erram</strong><span class="texto">Com 95%, cerca de 1 em cada 20 fica de fora. Sempre.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="exija" aria-pressed="false">
+        <span class="passo">02</span><strong>Exija 99%</strong><span class="texto">Quase ninguém erra. O preço aparece na largura média.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="amostra" aria-pressed="false">
+        <span class="passo">03</span><strong>Amostra de 200</strong><span class="texto">Os intervalos ficam estreitos, e a cobertura continua em 95%.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="z" aria-pressed="false">
+        <span class="passo">04</span><strong>Troque t por z com n = 5</strong><span class="texto">A cobertura cai para perto de 88%. O t existe por isso.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="torta" aria-pressed="false">
+        <span class="passo">05</span><strong>População torta, n = 5</strong><span class="texto">Mesmo com t, a promessa falha quando a população é assimétrica e a amostra é pequena.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="verdade" aria-pressed="false">
+        <span class="passo">06</span><strong>Esconda a verdade</strong><span class="texto">Um intervalo, sem μ na tela. É assim toda pesquisa real.</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Entenda</p>
+    <h2>O que você acabou de ver</h2>
+    <div class="explica">
+      <article><h3>O que está acontecendo</h3><p>A população é simulada, com média verdadeira μ = 50 e desvio padrão σ = 10. Cada amostra gera um intervalo diferente. O 95% é a taxa de acerto do método: de muitos intervalos feitos assim, cerca de 95% contêm μ.</p></article>
+      <article><h3>Cuidado</h3><p>Depois de calculado, um intervalo contém μ ou não contém. Dizer que há 95% de chance de μ estar ali é o erro mais comum. O que varia de amostra para amostra é o intervalo, não μ.</p></article>
+    </div>
+    <details class="conta">
+      <summary>A fórmula usada aqui</summary>
+      <div class="miolo">
+        <p class="formula">x̄ ± t · s/√n</p>
+        <p>O t vem da distribuição t de Student com n − 1 graus de liberdade. Ele é maior que o z porque compensa a incerteza extra de estimar σ com s. Com amostras grandes, os dois quase coincidem.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="reels">
+    <div class="limite">
+      <div><strong>Estatística em 30s</strong><p>Os vídeos explicam. Os simuladores deixam você testar.</p></div>
+      <a href="https://www.instagram.com/cecdlabufpr/">Ver no Instagram</a>
+    </div>
+  </section>
+
+  <nav class="limite seguir" aria-label="Outros simuladores">
+    <a href="../limite-central/"><span class="rotulo">Anterior</span>Teorema Central do Limite</a>
+    <a href="../correlacao/"><span class="rotulo">Próximo</span>Correlação</a>
+  </nav>
+</main>
+
+<footer class="rodape">
+  <div class="limite logos">
+    <img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="170" height="52">
+    <span class="fio" aria-hidden="true"></span>
+    <img src="../../imgs/logo_ufpr.png" alt="Universidade Federal do Paraná">
+  </div>
+  <div class="limite creditos">
+    <span>Dados simulados no seu navegador. Nada é enviado.</span>
+    <a href="../../">Página do CECD-Lab</a>
+  </div>
+</footer>
+<script src="../base/estat.js"></script>
+<script src="../base/lab.js"></script>
+<script src="sim.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lei dos grandes números · Simuladores do CECD-Lab</title>
+<meta name="description" content="Lance moedas e dados até 100 mil vezes e veja a média encontrar o valor esperado.">
+<meta property="og:title" content="Lei dos grandes números · Simuladores do CECD-Lab">
+<meta property="og:description" content="Lance moedas e dados até 100 mil vezes e veja a média encontrar o valor esperado.">
+<meta property="og:image" content="https://cecd-lab-ufpr.github.io/imgs/og.png">
+<meta property="og:url" content="https://cecd-lab-ufpr.github.io/simuladores/grandes-numeros/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../../imgs/favicon.png">
+<link rel="stylesheet" href="../base/lab.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <a href="../../"><img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="131" height="40"></a>
+    <nav aria-label="Navegação">
+      <a href="../">Simuladores</a>
+      <a class="rede" href="https://www.instagram.com/cecdlabufpr/" aria-label="Instagram do CECD-Lab" title="Instagram do CECD-Lab"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><path d="M17.5 6.5h.01"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="limite abertura">
+    <p class="rotulo">Simulador · Lei dos grandes números</p>
+    <h1>Uma moeda é imprevisível. Cem mil, não.</h1>
+    <p class="chamada">Repita um experimento muitas vezes e veja a média se aproximar do valor esperado.</p>
+  </section>
+
+  <section class="limite bancada" aria-label="Simulador">
+    <div class="graficos">
+      <figure class="painel" style="--alto: 300px; --alto-celular: 260px">
+        <figcaption><strong>Fig. 01</strong><span id="titulo-media">Proporção de caras</span></figcaption>
+        <canvas id="grafico" role="img" aria-label="Média acumulada de cada pessoa conforme o número de lançamentos aumenta."></canvas>
+        <ul class="legenda">
+          <li><span class="chave chave-ambar"></span>você</li>
+          <li id="chave-outras"><span class="chave"></span>outras pessoas</li>
+          <li id="chave-esperado"><span class="chave chave-branca"></span>valor esperado</li>
+          <li id="chave-funil"><span class="chave chave-faixa"></span>onde 95% devem ficar</li>
+        </ul>
+      </figure>
+      <figure class="painel" id="fig-dif" style="--alto: 170px; --alto-celular: 150px">
+        <figcaption><strong>Fig. 02</strong><span>Você: <span id="unidade-dif">caras a mais ou a menos que o esperado</span></span></figcaption>
+        <canvas id="grafico-dif" role="img" aria-label="Diferença entre a soma observada e a soma esperada conforme o número de lançamentos aumenta."></canvas>
+      </figure>
+      <p class="ajuda">Número de lançamentos em escala logarítmica: cada marca é 10 vezes a anterior.</p>
+    </div>
+    <div class="lateral">
+      <dl class="leituras">
+        <div class="leitura"><dt>Lançamentos</dt><dd id="n">–</dd></div><div class="leitura"><dt id="rotulo-media">Proporção de caras</dt><dd id="media">–</dd></div>
+        <div class="leitura"><dt>Valor esperado</dt><dd id="esperado">–</dd></div><div class="leitura"><dt>Diferença na soma</dt><dd id="diferenca">–</dd></div>
+      </dl>
+      <div class="controles">
+        <div class="campo">
+          <span class="rotulo" id="tipo-rotulo">Experimento</span>
+          <div class="chips" id="tipo" role="group" aria-labelledby="tipo-rotulo"><button type="button" data-valor="moeda" aria-pressed="true">Moeda</button><button type="button" data-valor="dado" aria-pressed="false">Dado</button><button type="button" data-valor="cauchy" aria-pressed="false">Cauchy</button></div>
+        </div>
+        <div class="campo" id="campo-p">
+          <div class="campo-topo"><label for="p">Chance de cara</label><output id="p-saida" for="p">50%</output></div>
+          <input id="p" type="range" min="0.05" max="0.95" step="0.05" value="0.5">
+        </div>
+        <div class="campo">
+          <span class="rotulo" id="pessoas-rotulo">Pessoas lançando</span>
+          <div class="chips" id="pessoas" role="group" aria-labelledby="pessoas-rotulo"><button type="button" data-valor="1" aria-pressed="false">1</button><button type="button" data-valor="5" aria-pressed="true">5</button><button type="button" data-valor="20" aria-pressed="false">20</button></div>
+        </div>
+        <div class="botoes">
+          <button class="botao botao-cheio" type="button" id="jogar">Lançar</button>
+          <button class="botao" type="button" id="limpar">Recomeçar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Experimente</p>
+    <h2>Toque e veja o que acontece</h2>
+    <div class="desafios">
+      <button class="desafio" type="button" data-desafio="honesta" aria-pressed="false">
+        <span class="passo">01</span><strong>Vinte pessoas, a mesma moeda</strong><span class="texto">No começo cada uma vai para um lado. Veja todas entrarem no funil.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="viciada" aria-pressed="false">
+        <span class="passo">02</span><strong>Moeda viciada</strong><span class="texto">Com 70% de chance de cara, a média vai para 0,7. Ela não busca 0,5.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="jogador" aria-pressed="false">
+        <span class="passo">03</span><strong>A falácia do jogador</strong><span class="texto">Olhe a Fig. 02: a proporção se acerta, mas as caras a mais não somem.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="falha" aria-pressed="false">
+        <span class="passo">04</span><strong>Quando a lei falha</strong><span class="texto">A distribuição de Cauchy não tem média. Por isso, nada converge.</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Entenda</p>
+    <h2>O que você acabou de ver</h2>
+    <div class="explica">
+      <article><h3>O que está acontecendo</h3><p>Cada lançamento é imprevisível, mas a média de muitos lançamentos fica cada vez mais perto do valor esperado. O funil mostra a velocidade: para reduzir a incerteza pela metade, é preciso quatro vezes mais lançamentos.</p></article>
+      <article><h3>Cuidado</h3><p>A moeda não tem memória. Depois de cinco caras seguidas, a chance de cara continua igual. A média se acerta porque o azar inicial fica diluído em muitos lançamentos, não porque coroas venham compensar.</p></article>
+    </div>
+    <details class="conta">
+      <summary>A lei em uma linha</summary>
+      <div class="miolo">
+        <p class="formula">x̄ₙ → μ quando n → ∞, com desvio padrão σ/√n</p>
+        <p>Vale para observações independentes e de mesma distribuição, desde que a média μ exista. Na distribuição de Cauchy, ela não existe: um único valor extremo basta para jogar a média acumulada longe, em qualquer momento.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="reels">
+    <div class="limite">
+      <div><strong>Estatística em 30s</strong><p>Os vídeos explicam. Os simuladores deixam você testar.</p></div>
+      <a href="https://www.instagram.com/cecdlabufpr/">Ver no Instagram</a>
+    </div>
+  </section>
+
+  <nav class="limite seguir" aria-label="Outros simuladores">
+    <a href="../desvio-padrao/"><span class="rotulo">Anterior</span>Desvio padrão</a>
+    <a href="../limite-central/"><span class="rotulo">Próximo</span>Teorema Central do Limite</a>
+  </nav>
+</main>
+
+<footer class="rodape">
+  <div class="limite logos">
+    <img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="170" height="52">
+    <span class="fio" aria-hidden="true"></span>
+    <img src="../../imgs/logo_ufpr.png" alt="Universidade Federal do Paraná">
+  </div>
+  <div class="limite creditos">
+    <span>Dados simulados no seu navegador. Nada é enviado.</span>
+    <a href="../../">Página do CECD-Lab</a>
+  </div>
+</footer>
+<script src="../base/estat.js"></script>
+<script src="../base/lab.js"></script>
+<script src="sim.js"></script>
+</body>
+</html>

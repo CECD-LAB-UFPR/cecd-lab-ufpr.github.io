@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desvio padrão · Simuladores do CECD-Lab</title>
+<meta name="description" content="Arraste as notas de duas turmas e veja a média ficar igual enquanto o espalhamento muda.">
+<meta property="og:title" content="Desvio padrão · Simuladores do CECD-Lab">
+<meta property="og:description" content="Arraste as notas de duas turmas e veja a média ficar igual enquanto o espalhamento muda.">
+<meta property="og:image" content="https://cecd-lab-ufpr.github.io/imgs/og.png">
+<meta property="og:url" content="https://cecd-lab-ufpr.github.io/simuladores/desvio-padrao/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../../imgs/favicon.png">
+<link rel="stylesheet" href="../base/lab.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <a href="../../"><img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="131" height="40"></a>
+    <nav aria-label="Navegação">
+      <a href="../">Simuladores</a>
+      <a class="rede" href="https://www.instagram.com/cecdlabufpr/" aria-label="Instagram do CECD-Lab" title="Instagram do CECD-Lab"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><path d="M17.5 6.5h.01"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="limite abertura">
+    <p class="rotulo">Simulador · Desvio padrão</p>
+    <h1>A média esconde. O desvio padrão mostra.</h1>
+    <p class="chamada">Duas turmas com média 7. Arraste as notas e veja o que muda.</p>
+  </section>
+
+  <section class="limite bancada" aria-label="Simulador">
+    <div class="graficos">
+      <figure class="painel" style="--alto: 430px; --alto-celular: 400px">
+        <figcaption><strong>Fig. 01</strong><span>Arraste qualquer nota</span></figcaption>
+        <canvas id="grafico" tabindex="0" role="application" aria-label="Notas de duas turmas em uma escala de 0 a 10. Use as setas para mudar a nota selecionada."></canvas>
+        <ul class="legenda">
+          <li><span class="chave chave-neutra"></span>média ± 1 desvio padrão</li>
+          <li><span class="chave chave-branca"></span>média</li>
+        </ul>
+      </figure>
+    </div>
+    <div class="lateral">
+      <p class="veredito" id="veredito" aria-live="polite"></p>
+      <dl class="leituras">
+        <div class="leitura"><dt>Média A</dt><dd id="media-a">–</dd></div><div class="leitura"><dt>s da Turma A</dt><dd id="dp-a">–</dd></div>
+        <div class="leitura"><dt>Média B</dt><dd id="media-b">–</dd></div><div class="leitura"><dt>s da Turma B</dt><dd id="dp-b">–</dd></div>
+      </dl>
+      <div class="controles">
+        <div class="campo">
+          <div class="campo-topo"><span>Turma A</span><output id="n-a">8</output></div>
+          <div class="botoes"><button class="botao" type="button" data-aluno="menos" data-turma="0">− aluno</button><button class="botao" type="button" data-aluno="mais" data-turma="0">+ aluno</button></div>
+        </div>
+        <div class="campo">
+          <div class="campo-topo"><span>Turma B</span><output id="n-b">8</output></div>
+          <div class="botoes"><button class="botao" type="button" data-aluno="menos" data-turma="1">− aluno</button><button class="botao" type="button" data-aluno="mais" data-turma="1">+ aluno</button></div>
+        </div>
+        <div class="botoes">
+          <button class="botao botao-cheio" type="button" id="sortear">Sortear notas</button>
+          <button class="botao" type="button" id="voltar">Notas do Reels</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Experimente</p>
+    <h2>Toque e veja o que acontece</h2>
+    <div class="desafios">
+      <button class="desafio" type="button" data-desafio="reels" aria-pressed="false">
+        <span class="passo">01</span><strong>As turmas do Reels</strong><span class="texto">Média 7 nas duas. Compare os valores de s.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="zero" aria-pressed="false">
+        <span class="passo">02</span><strong>Zere o desvio</strong><span class="texto">Todas as notas da Turma B em 7. O que acontece com s?</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="zerou" aria-pressed="false">
+        <span class="passo">03</span><strong>Um aluno zerou</strong><span class="texto">Uma nota 0 na Turma A. Veja o quanto s reage a um valor só.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="maximo" aria-pressed="false">
+        <span class="passo">04</span><strong>O maior desvio possível</strong><span class="texto">Metade tirou 0, metade tirou 10. A média ainda é 5.</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Entenda</p>
+    <h2>O que você acabou de ver</h2>
+    <div class="explica">
+      <article><h3>O que está acontecendo</h3><p>O desvio padrão mede o quanto os dados se afastam da média, em média. Quanto mais longas as linhas entre as notas e a média, maior é s. Ele vem na mesma unidade dos dados: aqui, pontos de nota.</p></article>
+      <article><h3>Cuidado</h3><p>s = 0 só acontece quando todos os valores são iguais. E s é sensível a valores extremos: uma nota muito fora do grupo pesa mais, porque as distâncias entram na conta ao quadrado.</p></article>
+    </div>
+    <details class="conta">
+      <summary>Ver a conta, nota por nota</summary>
+      <div class="miolo">
+        <p class="formula">s = √[ Σ(xᵢ − x̄)² ÷ (n − 1) ]</p>
+        <div class="tabelas" id="tabelas"></div>
+      </div>
+    </details>
+  </section>
+
+  <section class="reels">
+    <div class="limite">
+      <div><strong>Estatística em 30s</strong><p>Os vídeos explicam. Os simuladores deixam você testar.</p></div>
+      <a href="https://www.instagram.com/cecdlabufpr/">Ver no Instagram</a>
+    </div>
+  </section>
+
+  <nav class="limite seguir" aria-label="Outros simuladores">
+    <a href="../"><span class="rotulo">Voltar</span>Todos os simuladores</a>
+    <a href="../grandes-numeros/"><span class="rotulo">Próximo</span>Lei dos grandes números</a>
+  </nav>
+</main>
+
+<footer class="rodape">
+  <div class="limite logos">
+    <img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="170" height="52">
+    <span class="fio" aria-hidden="true"></span>
+    <img src="../../imgs/logo_ufpr.png" alt="Universidade Federal do Paraná">
+  </div>
+  <div class="limite creditos">
+    <span>Dados simulados no seu navegador. Nada é enviado.</span>
+    <a href="../../">Página do CECD-Lab</a>
+  </div>
+</footer>
+<script src="../base/estat.js"></script>
+<script src="../base/lab.js"></script>
+<script src="sim.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Correlação · Simuladores do CECD-Lab</title>
+<meta name="description" content="Mova pontos, veja o r reagir e tente adivinhar a correlação de cinco gráficos.">
+<meta property="og:title" content="Correlação · Simuladores do CECD-Lab">
+<meta property="og:description" content="Mova pontos, veja o r reagir e tente adivinhar a correlação de cinco gráficos.">
+<meta property="og:image" content="https://cecd-lab-ufpr.github.io/imgs/og.png">
+<meta property="og:url" content="https://cecd-lab-ufpr.github.io/simuladores/correlacao/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../../imgs/favicon.png">
+<link rel="stylesheet" href="../base/lab.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <a href="../../"><img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="131" height="40"></a>
+    <nav aria-label="Navegação">
+      <a href="../">Simuladores</a>
+      <a class="rede" href="https://www.instagram.com/cecdlabufpr/" aria-label="Instagram do CECD-Lab" title="Instagram do CECD-Lab"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><path d="M17.5 6.5h.01"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="limite abertura">
+    <p class="rotulo">Simulador · Correlação</p>
+    <h1>Um ponto pode mudar tudo.</h1>
+    <p class="chamada">Arraste os pontos e veja o r mudar. Depois, tente adivinhar o r de cinco gráficos.</p>
+  </section>
+
+  <section class="limite bancada" aria-label="Simulador">
+    <div class="graficos">
+      <figure class="painel" style="--alto: 440px; --alto-celular: 340px">
+        <figcaption><strong>Fig. 01</strong><span id="rodada">Toque para pôr ou tirar pontos. Arraste para mover.</span></figcaption>
+        <canvas id="grafico" tabindex="0" role="application" aria-label="Gráfico de dispersão editável. Use N e P para trocar de ponto e as setas para movê-lo."></canvas>
+        <ul class="legenda">
+          <li><span class="chave chave-ponto"></span>observação</li>
+          <li><span class="chave chave-branca"></span>reta de regressão</li>
+        </ul>
+      </figure>
+    </div>
+    <div class="lateral">
+      <p class="veredito" id="veredito" aria-live="polite"></p>
+      <dl class="leituras">
+        <div class="leitura"><dt>Correlação r</dt><dd id="r">–</dd></div><div class="leitura"><dt>r²</dt><dd id="r2">–</dd></div>
+        <div class="leitura"><dt>Pontos</dt><dd id="n">–</dd></div><div class="leitura"><dt>Inclinação</dt><dd id="inclinacao">–</dd></div>
+      </dl>
+      <div class="controles">
+        <div class="campo">
+          <span class="rotulo" id="modo-rotulo">Modo</span>
+          <div class="chips" id="modo" role="group" aria-labelledby="modo-rotulo"><button type="button" data-valor="explorar" aria-pressed="false">Explorar</button><button type="button" data-valor="adivinhar" aria-pressed="false">Adivinhar o r</button></div>
+        </div>
+        <div class="campo" id="controles-explorar" style="gap: 10px">
+          <div class="campo">
+          <span class="rotulo" id="cenario-rotulo">Cenário</span>
+          <div class="chips" id="cenario" role="group" aria-labelledby="cenario-rotulo"><button type="button" data-valor="forte" aria-pressed="false">Forte</button><button type="button" data-valor="negativa" aria-pressed="false">Negativa</button><button type="button" data-valor="nenhuma" aria-pressed="false">Nenhuma</button><button type="button" data-valor="curva" aria-pressed="false">Curva</button><button type="button" data-valor="extremo" aria-pressed="false">Ponto extremo</button><button type="button" data-valor="grupos" aria-pressed="false">Dois grupos</button></div>
+        </div>
+          <div class="botoes"><button class="botao" type="button" id="sortear">Sortear de novo</button></div>
+        </div>
+        <div class="campo" id="controles-adivinhar" style="gap: 10px" hidden>
+          <div class="campo">
+          <div class="campo-topo"><label for="palpite">Seu palpite para r</label><output id="palpite-saida" for="palpite">0,00</output></div>
+          <input id="palpite" type="range" min="-1" max="1" step="0.05" value="0">
+        </div>
+          <div class="botoes"><button class="botao botao-cheio" type="button" id="confirmar">Confirmar palpite</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Experimente</p>
+    <h2>Toque e veja o que acontece</h2>
+    <div class="desafios">
+      <button class="desafio" type="button" data-desafio="extremo" aria-pressed="false">
+        <span class="passo">01</span><strong>O ponto extremo</strong><span class="texto">Uma nuvem sem relação, mais um ponto longe. Arraste esse ponto para baixo.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="curva" aria-pressed="false">
+        <span class="passo">02</span><strong>Relação perfeita, r perto de 0</strong><span class="texto">A correlação só enxerga retas. Esta curva passa despercebida.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="grupos" aria-pressed="false">
+        <span class="passo">03</span><strong>Dois grupos</strong><span class="texto">Em cada grupo, a relação é negativa. Juntos, viram positiva.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="jogo" aria-pressed="false">
+        <span class="passo">04</span><strong>Adivinhe o r</strong><span class="texto">Cinco gráficos. Quanto menor o erro médio, melhor o seu olho.</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Entenda</p>
+    <h2>O que você acabou de ver</h2>
+    <div class="explica">
+      <article><h3>O que está acontecendo</h3><p>O r vai de −1 a 1 e mede a força da relação linear entre duas variáveis. O r² diz quanto da variação de Y a reta explica. Pontos longe do centro puxam a reta e o r com muito mais força.</p></article>
+      <article><h3>Cuidado</h3><p>Correlação não é causa: duas variáveis podem subir juntas por causa de uma terceira. Antes de confiar no r, olhe o gráfico. Ele não vê curvas, não avisa sobre grupos e pode depender de um único ponto.</p></article>
+    </div>
+    <details class="conta">
+      <summary>A fórmula do r</summary>
+      <div class="miolo">
+        <p class="formula">r = Σ(xᵢ − x̄)(yᵢ − ȳ) ÷ √[ Σ(xᵢ − x̄)² · Σ(yᵢ − ȳ)² ]</p>
+        <p>Pontos que estão acima da média em X e em Y ao mesmo tempo somam a favor do r. Pontos acima em um e abaixo no outro somam contra.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="reels">
+    <div class="limite">
+      <div><strong>Estatística em 30s</strong><p>Os vídeos explicam. Os simuladores deixam você testar.</p></div>
+      <a href="https://www.instagram.com/cecdlabufpr/">Ver no Instagram</a>
+    </div>
+  </section>
+
+  <nav class="limite seguir" aria-label="Outros simuladores">
+    <a href="../intervalo-de-confianca/"><span class="rotulo">Anterior</span>Intervalo de confiança</a>
+    <a href="../falso-positivo/"><span class="rotulo">Próximo</span>Falso positivo</a>
+  </nav>
+</main>
+
+<footer class="rodape">
+  <div class="limite logos">
+    <img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="170" height="52">
+    <span class="fio" aria-hidden="true"></span>
+    <img src="../../imgs/logo_ufpr.png" alt="Universidade Federal do Paraná">
+  </div>
+  <div class="limite creditos">
+    <span>Dados simulados no seu navegador. Nada é enviado.</span>
+    <a href="../../">Página do CECD-Lab</a>
+  </div>
+</footer>
+<script src="../base/estat.js"></script>
+<script src="../base/lab.js"></script>
+<script src="sim.js"></script>
+</body>
+</html>

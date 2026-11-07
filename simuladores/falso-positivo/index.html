@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Falso positivo · Simuladores do CECD-Lab</title>
+<meta name="description" content="Veja por que um teste muito bom ainda pode errar na maioria dos resultados positivos.">
+<meta property="og:title" content="Falso positivo · Simuladores do CECD-Lab">
+<meta property="og:description" content="Veja por que um teste muito bom ainda pode errar na maioria dos resultados positivos.">
+<meta property="og:image" content="https://cecd-lab-ufpr.github.io/imgs/og.png">
+<meta property="og:url" content="https://cecd-lab-ufpr.github.io/simuladores/falso-positivo/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../../imgs/favicon.png">
+<link rel="stylesheet" href="../base/lab.css">
+</head>
+<body>
+
+<header class="topo">
+  <div class="limite">
+    <a href="../../"><img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="131" height="40"></a>
+    <nav aria-label="Navegação">
+      <a href="../">Simuladores</a>
+      <a class="rede" href="https://www.instagram.com/cecdlabufpr/" aria-label="Instagram do CECD-Lab" title="Instagram do CECD-Lab"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><path d="M17.5 6.5h.01"/></svg></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="limite abertura">
+    <p class="rotulo">Simulador · Falso positivo</p>
+    <h1>Deu positivo. E agora?</h1>
+    <p class="chamada">Um teste com 95% de acerto pode errar na maioria dos positivos. Veja com 1.000 pessoas.</p>
+  </section>
+
+  <section class="limite bancada" aria-label="Simulador">
+    <div class="graficos">
+      <figure class="painel">
+        <figcaption><strong>Fig. 01</strong><span>1.000 pessoas</span></figcaption>
+        <canvas id="grafico" role="img" aria-label="Mil pessoas" style="height: auto; aspect-ratio: 8 / 5"></canvas>
+        <ul class="legenda">
+          <li><span class="chave chave-ponto"></span>tem a doença, positivo: <span id="vp">0</span></li>
+          <li><span class="chave chave-ponto chave-ambar"></span>sem a doença, positivo: <span id="fp">0</span></li>
+          <li><span class="chave chave-ponto chave-aro"></span>tem a doença, negativo: <span id="fn">0</span></li>
+          <li><span class="chave chave-ponto chave-apagada"></span>sem a doença, negativo: <span id="vn">0</span></li>
+        </ul>
+      </figure>
+    </div>
+    <div class="lateral">
+      <div class="destaque">
+        <p class="rotulo">Se deu positivo, a chance de ter a doença é</p>
+        <span class="numero" id="vpp" aria-live="polite">–</span>
+        <div class="barra" aria-hidden="true"><span class="verdadeiro" id="barra-vp"></span><span class="falso" id="barra-fp"></span></div>
+        <p id="vpp-frase"></p>
+        <p id="repetido">&nbsp;</p>
+      </div>
+      <div class="controles">
+        <div class="campo">
+          <div class="campo-topo"><label for="prev">Prevalência da doença</label><output id="prev-saida" for="prev">1%</output></div>
+          <input id="prev" type="range" min="0" max="1" step="0.001" value="0.5">
+        </div>
+        <div class="campo">
+          <div class="campo-topo"><label for="sens">Sensibilidade do teste</label><output id="sens-saida" for="sens">95%</output></div>
+          <input id="sens" type="range" min="0.5" max="1" step="0.005" value="0.95">
+        </div>
+        <div class="campo">
+          <div class="campo-topo"><label for="espec">Especificidade do teste</label><output id="espec-saida" for="espec">95%</output></div>
+          <input id="espec" type="range" min="0.5" max="0.999" step="0.001" value="0.95">
+        </div>
+        <p class="ajuda">Sensibilidade: acerta quem tem a doença. Especificidade: acerta quem não tem.</p>
+        <p class="ajuda" id="vpn"></p>
+        <div class="botoes">
+          <button class="botao botao-cheio" type="button" id="repetir">Testar de novo quem deu positivo</button>
+          <button class="botao" type="button" id="voltar">Recomeçar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Experimente</p>
+    <h2>Toque e veja o que acontece</h2>
+    <div class="desafios">
+      <button class="desafio" type="button" data-desafio="rara" aria-pressed="false">
+        <span class="passo">01</span><strong>Doença rara, teste bom</strong><span class="texto">Prevalência de 1% e teste com 95%: só 1 em 6 positivos tem a doença.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="risco" aria-pressed="false">
+        <span class="passo">02</span><strong>O mesmo teste em um grupo de risco</strong><span class="texto">Com prevalência de 30%, o mesmo positivo vale muito mais.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="melhor" aria-pressed="false">
+        <span class="passo">03</span><strong>Um teste mais específico</strong><span class="texto">Especificidade de 99,9%: os falsos positivos quase somem.</span>
+      </button>
+      <button class="desafio" type="button" data-desafio="repetir" aria-pressed="false">
+        <span class="passo">04</span><strong>Teste duas vezes</strong><span class="texto">Quem deu positivo faz outro teste. O positivo agora pesa muito mais.</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="limite secao">
+    <p class="rotulo">Entenda</p>
+    <h2>O que você acabou de ver</h2>
+    <div class="explica">
+      <article><h3>O que está acontecendo</h3><p>Quando a doença é rara, quase todo mundo é saudável. Mesmo uma taxa pequena de erro, aplicada a esse grupo enorme, gera mais falsos positivos do que os casos verdadeiros. Isso é o teorema de Bayes, contado em pessoas.</p></article>
+      <article><h3>Cuidado</h3><p>Sensibilidade não é a chance de você ter a doença. Essa chance depende também de quanto a doença é comum no grupo testado. Os valores aqui são exemplos simulados, e este simulador não serve como orientação médica.</p></article>
+    </div>
+    <details class="conta">
+      <summary>O teorema de Bayes</summary>
+      <div class="miolo">
+        <p class="formula">P(doença | positivo) = sens · prev ÷ [ sens · prev + (1 − espec) · (1 − prev) ]</p>
+        <p>O número em destaque usa esta conta exata; as contagens de pessoas são arredondadas. O botão de repetir o teste usa o resultado como nova prevalência, o que supõe que os dois testes erram de forma independente.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="reels">
+    <div class="limite">
+      <div><strong>Estatística em 30s</strong><p>Os vídeos explicam. Os simuladores deixam você testar.</p></div>
+      <a href="https://www.instagram.com/cecdlabufpr/">Ver no Instagram</a>
+    </div>
+  </section>
+
+  <nav class="limite seguir" aria-label="Outros simuladores">
+    <a href="../correlacao/"><span class="rotulo">Anterior</span>Correlação</a>
+    <a href="../"><span class="rotulo">Voltar</span>Todos os simuladores</a>
+  </nav>
+</main>
+
+<footer class="rodape">
+  <div class="limite logos">
+    <img src="../../imgs/logo_lab_curto.svg" alt="CECD-Lab" width="170" height="52">
+    <span class="fio" aria-hidden="true"></span>
+    <img src="../../imgs/logo_ufpr.png" alt="Universidade Federal do Paraná">
+  </div>
+  <div class="limite creditos">
+    <span>Dados simulados no seu navegador. Nada é enviado.</span>
+    <a href="../../">Página do CECD-Lab</a>
+  </div>
+</footer>
+<script src="../base/estat.js"></script>
+<script src="../base/lab.js"></script>
+<script src="sim.js"></script>
+</body>
+</html>
