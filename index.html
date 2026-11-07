@@ -51,9 +51,12 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
 .topo { position: sticky; top: 0; z-index: 10; background: var(--papel); border-bottom: 1px solid var(--linha); }
 .topo .limite { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 28px; padding-top: 12px; padding-bottom: 12px; }
 .topo img { width: auto; height: 42px; }
-.menu { display: flex; flex-wrap: wrap; gap: 2px 22px; }
+.menu { display: flex; flex-wrap: wrap; gap: 2px 22px; margin-left: auto; }
 .menu a { padding: 2px 0; font-size: 15px; font-weight: 500; color: var(--marinho); text-decoration: none; border-bottom: 2px solid transparent; }
 .menu a:hover { border-bottom-color: var(--ambar); }
+.rede { display: block; padding: 4px; color: var(--marinho); border-bottom: 2px solid transparent; }
+.rede:hover { border-bottom-color: var(--ambar); }
+.rede svg { display: block; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Abertura */
 .capa { color: var(--branco); background: var(--marinho); }
@@ -148,6 +151,8 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
 .creditos { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 24px; padding-bottom: 20px; font-family: var(--mono); font-size: 13px; color: #5a6378; }
 
 @media (max-width: 960px) {
+  .menu { order: 3; width: 100%; margin-left: 0; }
+  .rede { margin-left: auto; }
   .capa .limite, .duas-colunas, .areas { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   .grade-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .grade-3 { grid-template-columns: minmax(0, 1fr); }
@@ -194,6 +199,9 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
       <a href="#equipe">Equipe</a>
       <a href="#contato">Contato</a>
     </nav>
+    <a class="rede" href="https://www.instagram.com/cecdlabufpr/" aria-label="Instagram do CECD-Lab" title="Instagram do CECD-Lab">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.2"/><path d="M17.5 6.5h.01"/></svg>
+    </a>
   </div>
 </header>
 
@@ -448,6 +456,8 @@ a:focus-visible { outline: 2px solid var(--ambar); outline-offset: 3px; }
       <dl>
         <dt>E-mail</dt>
         <dd><a href="mailto:cecd.proplad@ufpr.br">cecd.proplad@ufpr.br</a></dd>
+        <dt>Instagram</dt>
+        <dd><a href="https://www.instagram.com/cecdlabufpr/">@cecdlabufpr</a></dd>
         <dt>Onde estamos</dt>
         <dd>CECD, na Reitoria, e DEST, no Centro Politécnico, com atuação híbrida</dd>
         <dt>GitHub</dt>
